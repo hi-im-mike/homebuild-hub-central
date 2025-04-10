@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   FileText,
@@ -16,6 +15,7 @@ import WarrantyStatus from '@/components/dashboard/WarrantyStatus';
 import { Separator } from '@/components/ui/separator';
 import { Card } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import ContactsList from '@/components/dashboard/ContactsList';
 
 const Dashboard = () => {
   // Mock data for demonstration
@@ -50,15 +50,14 @@ const Dashboard = () => {
     },
   ];
   
-  const contacts = [
-    // Company contacts
+  // Company contacts
+  const companyContacts = [
     {
       id: '1',
       name: 'John Smith',
       role: 'Project Manager',
       email: 'john.smith@example.com',
       phone: '(555) 123-4567',
-      isAdmin: false
     },
     {
       id: '2',
@@ -66,16 +65,17 @@ const Dashboard = () => {
       role: 'Site Supervisor',
       email: 'sarah.johnson@example.com',
       phone: '(555) 987-6543',
-      isAdmin: false
     },
-    // Admin contacts
+  ];
+  
+  // Admin contacts
+  const adminContacts = [
     {
       id: '3',
       name: 'Support Team',
       role: 'Technical Support',
       email: 'support@maverick.com',
       phone: '(800) 555-1234',
-      isAdmin: true
     },
     {
       id: '4',
@@ -83,7 +83,6 @@ const Dashboard = () => {
       role: 'Account Manager',
       email: 'jessica.adams@maverick.com',
       phone: '(800) 555-5678',
-      isAdmin: true
     },
   ];
 
@@ -240,75 +239,12 @@ const Dashboard = () => {
             </div>
           </Card>
         </div>
-        <div className="lg:col-span-4">
-          <div className="dashboard-card">
-            <div className="dashboard-card-header">
-              <h2 className="dashboard-card-title">Contacts</h2>
-            </div>
-            
-            <div className="space-y-4">
-              {/* Company contacts */}
-              {contacts.filter(contact => !contact.isAdmin).map((contact) => (
-                <div key={contact.id} className="flex items-start space-x-4 border-b border-border pb-4 last:pb-0 last:border-0">
-                  <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
-                    <User className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium">{contact.name}</h4>
-                    <p className="text-sm text-muted-foreground">{contact.role}</p>
-                    <div className="mt-2 space-y-1">
-                      <div className="flex items-center text-sm">
-                        <Mail className="h-3 w-3 mr-2 text-muted-foreground" />
-                        <a href={`mailto:${contact.email}`} className="text-primary hover:underline">
-                          {contact.email}
-                        </a>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Phone className="h-3 w-3 mr-2 text-muted-foreground" />
-                        <a href={`tel:${contact.phone}`} className="text-primary hover:underline">
-                          {contact.phone}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              
-              {/* Divider between company and admin contacts */}
-              <div className="py-2">
-                <Separator className="h-0.5 bg-primary/10" />
-                <p className="text-center text-sm text-muted-foreground font-medium py-1">ADMIN CONTACTS</p>
-                <Separator className="h-0.5 bg-primary/10" />
-              </div>
-              
-              {/* Admin contacts */}
-              {contacts.filter(contact => contact.isAdmin).map((contact) => (
-                <div key={contact.id} className="flex items-start space-x-4 border-b border-border pb-4 last:pb-0 last:border-0">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <User className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium">{contact.name}</h4>
-                    <p className="text-sm text-muted-foreground">{contact.role}</p>
-                    <div className="mt-2 space-y-1">
-                      <div className="flex items-center text-sm">
-                        <Mail className="h-3 w-3 mr-2 text-muted-foreground" />
-                        <a href={`mailto:${contact.email}`} className="text-primary hover:underline">
-                          {contact.email}
-                        </a>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Phone className="h-3 w-3 mr-2 text-muted-foreground" />
-                        <a href={`tel:${contact.phone}`} className="text-primary hover:underline">
-                          {contact.phone}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="lg:col-span-4 space-y-6">
+          {/* Company Contacts Card */}
+          <ContactsList title="Company Contacts" contacts={companyContacts} />
+          
+          {/* Admin Contacts Card */}
+          <ContactsList title="Admin Contacts" contacts={adminContacts} />
         </div>
       </div>
     </div>

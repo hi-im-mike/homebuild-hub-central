@@ -18,54 +18,89 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Shield, PlusCircle, Search } from 'lucide-react';
+import { Shield, Search, Building, AlertTriangle, PlusCircle } from 'lucide-react';
 import StatusBadge from '@/components/shared/StatusBadge';
+
+// Define the status type to match what StatusBadge expects
+type Status = "pending" | "approved" | "incomplete" | "completed" | "active";
+
+interface WarrantyApplication {
+  id: string;
+  propertyAddress: string;
+  type: string;
+  submissionDate: string;
+  status: Status;
+  issues?: string;
+}
 
 const WarrantyApplications = () => {
   const navigate = useNavigate();
   
   // Mock data for demonstration
-  const applications = [
+  const applications: WarrantyApplication[] = [
     {
       id: '1',
-      propertyName: 'Oakwood Residence',
-      address: '123 Main St, Austin, TX 78701',
-      homeowner: 'Michael Johnson',
-      dateSubmitted: 'Apr 5, 2025',
-      status: 'incomplete' as const,
+      propertyAddress: '123 Main St',
+      type: 'Structural Warranty',
+      submissionDate: 'Apr 10, 2025',
+      status: 'incomplete',
+      issues: 'Missing documentation',
     },
     {
       id: '2',
-      propertyName: 'The Pines',
-      address: '456 Oak Drive, Austin, TX 78704',
-      homeowner: 'Sarah Williams',
-      dateSubmitted: 'Apr 2, 2025',
-      status: 'incomplete' as const,
+      propertyAddress: '456 Elm St',
+      type: 'Structural Warranty',
+      submissionDate: 'Apr 9, 2025',
+      status: 'incomplete',
+      issues: 'Payment issue',
     },
     {
       id: '3',
-      propertyName: 'Riverside Condo',
-      address: '789 River Bend, Austin, TX 78730',
-      homeowner: 'Robert Davis',
-      dateSubmitted: 'Mar 28, 2025',
-      status: 'completed' as const,
+      propertyAddress: '789 Oak Ave',
+      type: 'Structural Warranty',
+      submissionDate: 'Apr 8, 2025',
+      status: 'pending',
+    },
+    {
+      id: '4',
+      propertyAddress: '101 Pine Dr',
+      type: 'Structural Warranty',
+      submissionDate: 'Apr 7, 2025',
+      status: 'approved',
+    },
+    {
+      id: '5',
+      propertyAddress: '202 Maple Ln',
+      type: 'Structural Warranty',
+      submissionDate: 'Apr 6, 2025',
+      status: 'approved',
     },
   ];
 
-  // Sort applications - incomplete first
+  // Sort incomplete first, then pending, then others
   const sortedApplications = [...applications].sort((a, b) => {
     if (a.status === 'incomplete' && b.status !== 'incomplete') return -1;
     if (a.status !== 'incomplete' && b.status === 'incomplete') return 1;
+    if (a.status === 'pending' && b.status !== 'pending' && b.status !== 'incomplete') return -1;
+    if (a.status !== 'pending' && a.status !== 'incomplete' && b.status === 'pending') return 1;
     return 0;
   });
 
-  const handleViewApplication = (id: string) => {
-    // Navigate to property details with warranty tab active
-    navigate(`/properties/${id}?tab=warranty`);
+  // Count by status
+  const statusCounts = {
+    incomplete: applications.filter(a => a.status === 'incomplete').length,
+    pending: applications.filter(a => a.status === 'pending').length,
+    approved: applications.filter(a => a.status === 'approved').length,
   };
 
-  const handleEditApplication = (id: string) => {
-    // Navigate to property details with warranty tab active
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredApplications = sortedApplications.filter(application => 
+    application.propertyAddress.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    application.type.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleViewApplication = (id: string) => {
     navigate(`/properties/${id}?tab=warranty`);
   };
 
@@ -74,16 +109,16 @@ const WarrantyApplications = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Warranty Applications</h1>
-          <p className="text-muted-foreground">Manage warranty applications for properties</p>
+          <p className="text-muted-foreground">Manage your warranty applications</p>
         </div>
         <Button className="sm:w-auto w-full">
           <PlusCircle className="mr-2 h-4 w-4" />
-          New Application
+          Add Application
         </Button>
       </div>
 
       {/* Status Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Applications</CardTitle>
@@ -94,35 +129,44 @@ const WarrantyApplications = () => {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Incomplete</CardTitle>
+            <CardTitle className="text-sm font-medium">Approved Applications</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{applications.filter(app => app.status === 'incomplete').length}</div>
+            <div className="text-2xl font-bold">{statusCounts.approved}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            <CardTitle className="text-sm font-medium">Need Attention</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{applications.filter(app => app.status === 'completed').length}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Approved</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{applications.filter(app => app.status === 'approved').length}</div>
+            <div className="text-2xl font-bold text-danger">
+              {statusCounts.incomplete}
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Alert for applications with issues */}
+      {statusCounts.incomplete > 0 && (
+        <div className="bg-danger/10 border border-danger/30 rounded-lg p-4 flex items-start">
+          <AlertTriangle className="h-5 w-5 text-danger mr-3 mt-0.5" />
+          <div>
+            <h3 className="font-medium text-danger">Attention Required</h3>
+            <p className="text-sm text-foreground">
+              You have {statusCounts.incomplete} applications with issues that need your attention.
+            </p>
+          </div>
+        </div>
+      )}
       
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input 
           placeholder="Search applications..." 
           className="pl-10"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
       
@@ -130,7 +174,7 @@ const WarrantyApplications = () => {
         <CardHeader>
           <CardTitle>Warranty Applications</CardTitle>
           <CardDescription>
-            Manage warranty applications for your properties
+            View and manage all your warranty applications
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -138,28 +182,38 @@ const WarrantyApplications = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Property</TableHead>
-                <TableHead>Homeowner</TableHead>
-                <TableHead>Date Submitted</TableHead>
+                <TableHead>Warranty Type</TableHead>
+                <TableHead>Submission Date</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Issues</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedApplications.map((application) => (
+              {filteredApplications.map((application) => (
                 <TableRow key={application.id}>
                   <TableCell>
                     <div className="flex items-center">
-                      <Shield className="h-5 w-5 text-primary mr-3" />
-                      <div>
-                        <div className="font-medium">{application.propertyName}</div>
-                        <div className="text-xs text-muted-foreground">{application.address}</div>
-                      </div>
+                      <Building className="h-5 w-5 text-primary mr-3" />
+                      <div className="font-medium">{application.propertyAddress}</div>
                     </div>
                   </TableCell>
-                  <TableCell>{application.homeowner}</TableCell>
-                  <TableCell>{application.dateSubmitted}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <Shield className="h-4 w-4 text-muted-foreground mr-2" />
+                      <span>{application.type}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{application.submissionDate}</TableCell>
                   <TableCell>
                     <StatusBadge status={application.status} />
+                  </TableCell>
+                  <TableCell>
+                    {application.issues ? (
+                      <span className="text-danger">{application.issues}</span>
+                    ) : (
+                      <span className="text-muted-foreground">None</span>
+                    )}
                   </TableCell>
                   <TableCell className="text-right">
                     <Button 
@@ -169,13 +223,7 @@ const WarrantyApplications = () => {
                     >
                       View
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={() => handleEditApplication(application.id)}
-                    >
-                      Edit
-                    </Button>
+                    <Button variant="ghost" size="sm">Edit</Button>
                   </TableCell>
                 </TableRow>
               ))}

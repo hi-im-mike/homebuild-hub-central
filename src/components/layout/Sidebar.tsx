@@ -22,9 +22,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
     { name: 'Properties', path: '/properties', icon: Building },
     { name: 'Warranty Applications', path: '/warranty-applications', icon: Shield },
     { name: "Builder's Risk Policies", path: '/risk-policies', icon: ClipboardList },
+    { name: 'Subcontractors', path: '/subcontractors', icon: Briefcase },
     { name: 'Homeowners', path: '/homeowners', icon: Users },
     { name: 'Energy Guarantees', path: '/energy', icon: Zap },
-    { name: 'Subcontractors', path: '/subcontractors', icon: Briefcase },
   ];
   
   const isActive = (path: string) => {

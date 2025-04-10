@@ -14,6 +14,7 @@ import RiskPolicies from "./pages/RiskPolicies";
 import Homeowners from "./pages/Homeowners";
 import Subcontractors from "./pages/Subcontractors";
 import NotFound from "./pages/NotFound";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/energy" element={<Layout><Dashboard /></Layout>} />
           <Route path="/subcontractors" element={<Layout><Subcontractors /></Layout>} />
           <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />
+          <Route path="/settings" element={<Layout><Settings /></Layout>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

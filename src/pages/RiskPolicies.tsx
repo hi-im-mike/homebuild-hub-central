@@ -18,62 +18,89 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ClipboardList, PlusCircle, Search } from 'lucide-react';
+import { ClipboardList, Search, Building, AlertTriangle, PlusCircle } from 'lucide-react';
 import StatusBadge from '@/components/shared/StatusBadge';
+
+// Define the status type to match what StatusBadge expects
+type Status = "pending" | "approved" | "incomplete" | "completed" | "active";
+
+interface Policy {
+  id: string;
+  propertyAddress: string;
+  type: string;
+  submissionDate: string;
+  status: Status;
+  issues?: string;
+}
 
 const RiskPolicies = () => {
   const navigate = useNavigate();
   
   // Mock data for demonstration
-  const policies = [
+  const policies: Policy[] = [
     {
       id: '1',
-      propertyName: 'Oakwood Residence',
-      address: '123 Main St, Austin, TX 78701',
-      builder: 'Acme Construction',
-      expiryDate: 'Dec 15, 2025',
-      status: 'incomplete' as const,
+      propertyAddress: '123 Main St',
+      type: "Builder's Risk",
+      submissionDate: 'Apr 10, 2025',
+      status: 'incomplete',
+      issues: 'Missing documentation',
     },
     {
       id: '2',
-      propertyName: 'The Pines',
-      address: '456 Oak Drive, Austin, TX 78704',
-      builder: 'BuildRight Homes',
-      expiryDate: 'Jan 30, 2026',
-      status: 'incomplete' as const,
+      propertyAddress: '456 Elm St',
+      type: "Builder's Risk",
+      submissionDate: 'Apr 9, 2025',
+      status: 'incomplete',
+      issues: 'Payment issue',
     },
     {
       id: '3',
-      propertyName: 'Riverside Condo',
-      address: '789 River Bend, Austin, TX 78730',
-      builder: 'Prestige Custom Homes',
-      expiryDate: 'Nov 10, 2025',
-      status: 'completed' as const,
+      propertyAddress: '789 Oak Ave',
+      type: "Builder's Risk",
+      submissionDate: 'Apr 8, 2025',
+      status: 'pending',
     },
     {
       id: '4',
-      propertyName: 'Lakefront Villa',
-      address: '101 Lake Shore Dr, Austin, TX 78746',
-      builder: 'Elite Builders',
-      expiryDate: 'Mar 22, 2026',
-      status: 'approved' as const,
+      propertyAddress: '101 Pine Dr',
+      type: "Builder's Risk",
+      submissionDate: 'Apr 7, 2025',
+      status: 'approved',
+    },
+    {
+      id: '5',
+      propertyAddress: '202 Maple Ln',
+      type: "Builder's Risk",
+      submissionDate: 'Apr 6, 2025',
+      status: 'approved',
     },
   ];
 
-  // Sort policies - incomplete first
+  // Sort incomplete first, then pending, then others
   const sortedPolicies = [...policies].sort((a, b) => {
     if (a.status === 'incomplete' && b.status !== 'incomplete') return -1;
     if (a.status !== 'incomplete' && b.status === 'incomplete') return 1;
+    if (a.status === 'pending' && b.status !== 'pending' && b.status !== 'incomplete') return -1;
+    if (a.status !== 'pending' && a.status !== 'incomplete' && b.status === 'pending') return 1;
     return 0;
   });
 
-  const handleViewPolicy = (id: string) => {
-    // Navigate to property details with builders-risk tab active
-    navigate(`/properties/${id}?tab=builders-risk`);
+  // Count by status
+  const statusCounts = {
+    incomplete: policies.filter(p => p.status === 'incomplete').length,
+    pending: policies.filter(p => p.status === 'pending').length,
+    approved: policies.filter(p => p.status === 'approved').length,
   };
 
-  const handleEditPolicy = (id: string) => {
-    // Navigate to property details with builders-risk tab active
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredPolicies = sortedPolicies.filter(policy => 
+    policy.propertyAddress.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    policy.type.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleViewPolicy = (id: string) => {
     navigate(`/properties/${id}?tab=builders-risk`);
   };
 
@@ -82,16 +109,16 @@ const RiskPolicies = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Builder's Risk Policies</h1>
-          <p className="text-muted-foreground">Manage builder's risk policies for properties</p>
+          <p className="text-muted-foreground">Manage your Builder's Risk insurance policies</p>
         </div>
         <Button className="sm:w-auto w-full">
           <PlusCircle className="mr-2 h-4 w-4" />
-          New Policy
+          Add Policy
         </Button>
       </div>
 
       {/* Status Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Policies</CardTitle>
@@ -102,35 +129,44 @@ const RiskPolicies = () => {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Incomplete</CardTitle>
+            <CardTitle className="text-sm font-medium">Approved Policies</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{policies.filter(policy => policy.status === 'incomplete').length}</div>
+            <div className="text-2xl font-bold">{statusCounts.approved}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            <CardTitle className="text-sm font-medium">Need Attention</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{policies.filter(policy => policy.status === 'completed').length}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Approved</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{policies.filter(policy => policy.status === 'approved').length}</div>
+            <div className="text-2xl font-bold text-danger">
+              {statusCounts.incomplete}
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Alert for applications with issues */}
+      {statusCounts.incomplete > 0 && (
+        <div className="bg-danger/10 border border-danger/30 rounded-lg p-4 flex items-start">
+          <AlertTriangle className="h-5 w-5 text-danger mr-3 mt-0.5" />
+          <div>
+            <h3 className="font-medium text-danger">Attention Required</h3>
+            <p className="text-sm text-foreground">
+              You have {statusCounts.incomplete} policies with issues that need your attention.
+            </p>
+          </div>
+        </div>
+      )}
       
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input 
           placeholder="Search policies..." 
           className="pl-10"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
       
@@ -138,7 +174,7 @@ const RiskPolicies = () => {
         <CardHeader>
           <CardTitle>Builder's Risk Policies</CardTitle>
           <CardDescription>
-            Manage builder's risk policies for your properties
+            View and manage all your builder's risk policies
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -146,28 +182,38 @@ const RiskPolicies = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Property</TableHead>
-                <TableHead>Builder</TableHead>
-                <TableHead>Expiry Date</TableHead>
+                <TableHead>Policy Type</TableHead>
+                <TableHead>Submission Date</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Issues</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedPolicies.map((policy) => (
+              {filteredPolicies.map((policy) => (
                 <TableRow key={policy.id}>
                   <TableCell>
                     <div className="flex items-center">
-                      <ClipboardList className="h-5 w-5 text-primary mr-3" />
-                      <div>
-                        <div className="font-medium">{policy.propertyName}</div>
-                        <div className="text-xs text-muted-foreground">{policy.address}</div>
-                      </div>
+                      <Building className="h-5 w-5 text-primary mr-3" />
+                      <div className="font-medium">{policy.propertyAddress}</div>
                     </div>
                   </TableCell>
-                  <TableCell>{policy.builder}</TableCell>
-                  <TableCell>{policy.expiryDate}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <ClipboardList className="h-4 w-4 text-muted-foreground mr-2" />
+                      <span>{policy.type}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{policy.submissionDate}</TableCell>
                   <TableCell>
                     <StatusBadge status={policy.status} />
+                  </TableCell>
+                  <TableCell>
+                    {policy.issues ? (
+                      <span className="text-danger">{policy.issues}</span>
+                    ) : (
+                      <span className="text-muted-foreground">None</span>
+                    )}
                   </TableCell>
                   <TableCell className="text-right">
                     <Button 
@@ -177,13 +223,7 @@ const RiskPolicies = () => {
                     >
                       View
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={() => handleEditPolicy(policy.id)}
-                    >
-                      Edit
-                    </Button>
+                    <Button variant="ghost" size="sm">Edit</Button>
                   </TableCell>
                 </TableRow>
               ))}
