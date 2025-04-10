@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { 
   Home, Users, FileText, Shield, Zap, ClipboardList, Settings, 
-  Bell, LogOut, User, ChevronLeft, ChevronRight, Building, Briefcase
+  Bell, LogOut, User, ChevronLeft, ChevronRight, Building, Briefcase, Printer
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -21,10 +21,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
     { name: 'Dashboard', path: '/', icon: Home },
     { name: 'Properties', path: '/properties', icon: Building },
     { name: 'Warranty Applications', path: '/warranty-applications', icon: Shield },
+    { name: 'Energy Guarantees', path: '/energy', icon: Zap },
     { name: "Builder's Risk Policies", path: '/risk-policies', icon: ClipboardList },
     { name: 'Subcontractors', path: '/subcontractors', icon: Briefcase },
     { name: 'Homeowners', path: '/homeowners', icon: Users },
-    { name: 'Energy Guarantees', path: '/energy', icon: Zap },
+    { name: 'Print Shop', path: 'https://maverick.myprintdesk.net', icon: Printer, external: true },
   ];
   
   const isActive = (path: string) => {
@@ -73,20 +74,37 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
         <nav className="flex flex-col p-2 space-y-1 overflow-y-auto h-[calc(100vh-64px)]">
           <div className="space-y-1 mb-6">
             {menuItems.map((item) => (
-              <Link 
-                key={item.path}
-                to={item.path}
-                className={cn(
-                  "flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
-                  isActive(item.path) 
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground" 
-                    : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
-                )}
-                title={!isOpen ? item.name : undefined}
-              >
-                <item.icon className="h-5 w-5 min-w-5" />
-                {isOpen && <span className="ml-3">{item.name}</span>}
-              </Link>
+              item.external ? (
+                <a 
+                  key={item.path}
+                  href={item.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+                    "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+                  )}
+                  title={!isOpen ? item.name : undefined}
+                >
+                  <item.icon className="h-5 w-5 min-w-5" />
+                  {isOpen && <span className="ml-3">{item.name}</span>}
+                </a>
+              ) : (
+                <Link 
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    "flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+                    isActive(item.path) 
+                      ? "bg-sidebar-accent text-sidebar-accent-foreground" 
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+                  )}
+                  title={!isOpen ? item.name : undefined}
+                >
+                  <item.icon className="h-5 w-5 min-w-5" />
+                  {isOpen && <span className="ml-3">{item.name}</span>}
+                </Link>
+              )
             ))}
           </div>
           

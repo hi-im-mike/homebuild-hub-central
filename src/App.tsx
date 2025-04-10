@@ -15,6 +15,9 @@ import Homeowners from "./pages/Homeowners";
 import Subcontractors from "./pages/Subcontractors";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
+import BuilderDetails from "./pages/BuilderDetails";
+import AllBuilders from "./pages/AllBuilders";
+import AdminNavbar from "./components/layout/AdminNavbar";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +28,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Builder account routes */}
           <Route path="/" element={<Layout><Dashboard /></Layout>} />
           <Route path="/properties" element={<Layout><Properties /></Layout>} />
           <Route path="/properties/:id" element={<Layout><PropertyDetails /></Layout>} />
@@ -35,7 +39,22 @@ const App = () => (
           <Route path="/subcontractors" element={<Layout><Subcontractors /></Layout>} />
           <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />
           <Route path="/settings" element={<Layout><Settings /></Layout>} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          
+          {/* Admin routes */}
+          <Route path="/builder-details" element={<>
+            <AdminNavbar />
+            <BuilderDetails />
+          </>} />
+          <Route path="/builder-details/:id" element={<>
+            <AdminNavbar />
+            <BuilderDetails />
+          </>} />
+          <Route path="/all-builders" element={<>
+            <AdminNavbar />
+            <AllBuilders />
+          </>} />
+          
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

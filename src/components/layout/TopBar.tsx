@@ -1,29 +1,75 @@
 
 import React from 'react';
-import { Bell, Menu, User } from 'lucide-react';
+import { Bell, Menu, User, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuLabel, 
   DropdownMenuSeparator, 
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  DropdownMenuGroup
 } from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useNavigate } from 'react-router-dom';
 
 interface TopBarProps {
   toggleSidebar: () => void;
 }
 
 const TopBar: React.FC<TopBarProps> = ({ toggleSidebar }) => {
+  const navigate = useNavigate();
+  
+  // Mock data for builder accounts
+  const builderAccounts = [
+    { id: '1', name: 'ABC Builders' },
+    { id: '2', name: 'XYZ Construction' },
+    { id: '3', name: 'Homestead Developers' },
+  ];
+
+  const handleExitBuilderAccount = () => {
+    // Navigate to builder details page
+    navigate('/builder-details');
+  };
+
   return (
     <header className="h-16 bg-white border-b border-border z-10">
       <div className="flex items-center justify-between h-full px-4">
-        <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden">
-          <Menu className="h-5 w-5" />
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden">
+            <Menu className="h-5 w-5" />
+          </Button>
+          
+          <Select defaultValue={builderAccounts[0].id}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Select Builder Account" />
+            </SelectTrigger>
+            <SelectContent>
+              {builderAccounts.map(account => (
+                <SelectItem key={account.id} value={account.id}>
+                  {account.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          
+          <Badge variant="outline" className="bg-primary text-primary-foreground">Admin</Badge>
+        </div>
         
         <div className="flex items-center ml-auto space-x-2">
+          <Button variant="outline" size="sm" onClick={handleExitBuilderAccount}>
+            <ExternalLink className="h-4 w-4 mr-2" />
+            Exit Builder Account
+          </Button>
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
