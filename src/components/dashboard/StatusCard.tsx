@@ -9,7 +9,6 @@ interface StatusCardProps {
   status: 'pending' | 'approved' | 'rejected' | 'incomplete';
   icon: React.ReactNode;
   className?: string;
-  onClick?: () => void;
 }
 
 const StatusCard: React.FC<StatusCardProps> = ({ 
@@ -18,8 +17,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
   countSuffix = '',
   status, 
   icon,
-  className,
-  onClick
+  className 
 }) => {
   const statusColors = {
     pending: 'bg-warning/10 text-warning border-warning/30',
@@ -29,14 +27,11 @@ const StatusCard: React.FC<StatusCardProps> = ({
   };
 
   return (
-    <div 
-      className={cn(
-        "dashboard-card border rounded-lg cursor-pointer p-4", 
-        statusColors[status],
-        className
-      )}
-      onClick={onClick}
-    >
+    <div className={cn(
+      "dashboard-card border rounded-lg", 
+      statusColors[status],
+      className
+    )}>
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-medium">{title}</h3>
