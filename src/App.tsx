@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Properties from "./pages/Properties";
+import PropertyDetails from "./pages/PropertyDetails";
 import OnboardingApplications from "./pages/OnboardingApplications";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
@@ -22,6 +23,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Layout><Dashboard /></Layout>} />
           <Route path="/properties" element={<Layout><Properties /></Layout>} />
+          <Route path="/properties/:id" element={<Layout><PropertyDetails /></Layout>} />
           <Route path="/onboarding" element={<Layout><OnboardingApplications /></Layout>} />
           <Route path="/warranty" element={<Layout><Dashboard /></Layout>} />
           <Route path="/energy" element={<Layout><Dashboard /></Layout>} />

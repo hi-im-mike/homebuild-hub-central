@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Home, Search, MapPin, User, X } from 'lucide-react';
 import StatusBadge from '@/components/shared/StatusBadge';
