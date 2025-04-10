@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { 
   Home, Users, FileText, Shield, Zap, ClipboardList, Settings, 
-  Bell, LogOut, User
+  Bell, LogOut, User, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -43,17 +43,33 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
       {/* Sidebar */}
       <aside 
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-transform duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-50 bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300 ease-in-out",
+          isOpen ? "w-64" : "w-[4.5rem]",
           isMobile && !isOpen ? "-translate-x-full" : "translate-x-0"
         )}
       >
         {/* Sidebar header */}
-        <div className="h-16 flex items-center justify-center border-b border-sidebar-border">
-          <h1 className="text-xl font-bold">HomeBuild Hub</h1>
+        <div className="h-16 flex items-center justify-between border-b border-sidebar-border px-4">
+          {isOpen ? (
+            <h1 className="text-xl font-bold">HomeBuild Hub</h1>
+          ) : (
+            <span className="text-xl font-bold mx-auto">HBH</span>
+          )}
+          
+          {!isMobile && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={toggleSidebar} 
+              className="ml-auto"
+            >
+              {isOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+            </Button>
+          )}
         </div>
         
         {/* Nav items */}
-        <nav className="flex flex-col p-4 space-y-1 overflow-y-auto h-[calc(100vh-64px)]">
+        <nav className="flex flex-col p-2 space-y-1 overflow-y-auto h-[calc(100vh-64px)]">
           <div className="space-y-1 mb-6">
             {menuItems.map((item) => (
               <Link 
@@ -65,9 +81,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
                     ? "bg-sidebar-accent text-sidebar-accent-foreground" 
                     : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
                 )}
+                title={!isOpen ? item.name : undefined}
               >
-                <item.icon className="h-5 w-5 mr-3" />
-                <span>{item.name}</span>
+                <item.icon className="h-5 w-5 min-w-5" />
+                {isOpen && <span className="ml-3">{item.name}</span>}
               </Link>
             ))}
           </div>
@@ -76,31 +93,35 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
             <Link 
               to="/profile"
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground transition-colors duration-200"
+              title={!isOpen ? "Profile" : undefined}
             >
-              <User className="h-5 w-5 mr-3" />
-              <span>Profile</span>
+              <User className="h-5 w-5 min-w-5" />
+              {isOpen && <span className="ml-3">Profile</span>}
             </Link>
             <Link 
               to="/settings"
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground transition-colors duration-200"
+              title={!isOpen ? "Settings" : undefined}
             >
-              <Settings className="h-5 w-5 mr-3" />
-              <span>Settings</span>
+              <Settings className="h-5 w-5 min-w-5" />
+              {isOpen && <span className="ml-3">Settings</span>}
             </Link>
             <Link 
               to="/notifications"
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground transition-colors duration-200"
+              title={!isOpen ? "Notifications" : undefined}
             >
-              <Bell className="h-5 w-5 mr-3" />
-              <span>Notifications</span>
+              <Bell className="h-5 w-5 min-w-5" />
+              {isOpen && <span className="ml-3">Notifications</span>}
             </Link>
             <Button
               variant="link"
               className="flex w-full items-center px-3 py-2 rounded-md text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground transition-colors duration-200 justify-start"
               onClick={() => console.log('Logout clicked')}
+              title={!isOpen ? "Logout" : undefined}
             >
-              <LogOut className="h-5 w-5 mr-3" />
-              <span>Logout</span>
+              <LogOut className="h-5 w-5 min-w-5" />
+              {isOpen && <span className="ml-3">Logout</span>}
             </Button>
           </div>
         </nav>
