@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -33,6 +34,12 @@ const BuilderDetails = () => {
     { id: '1', name: 'ABC Builders', address: '123 Construction Ave, Austin, TX', properties: 24, active: true },
     { id: '2', name: 'ABC Custom Homes', address: '456 Builder St, Austin, TX', properties: 12, active: true },
   ];
+
+  // Handle builder account selection
+  const handleSelectBuilderAccount = (builderId) => {
+    // Navigate to the dashboard for the selected builder
+    navigate(`/?builderId=${builderId}`);
+  };
 
   return (
     <div className="container mx-auto py-8 space-y-6">
@@ -107,7 +114,11 @@ const BuilderDetails = () => {
               </TableHeader>
               <TableBody>
                 {linkedAccounts.map((account) => (
-                  <TableRow key={account.id}>
+                  <TableRow 
+                    key={account.id} 
+                    className="cursor-pointer hover:bg-accent/50"
+                    onClick={() => handleSelectBuilderAccount(account.id)}
+                  >
                     <TableCell>
                       <div>
                         <div className="font-medium">{account.name}</div>
@@ -123,7 +134,15 @@ const BuilderDetails = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-8 w-8 p-0"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSelectBuilderAccount(account.id);
+                        }}
+                      >
                         <ArrowRight className="h-4 w-4" />
                       </Button>
                     </TableCell>
