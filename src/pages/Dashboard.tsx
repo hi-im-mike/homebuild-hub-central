@@ -14,6 +14,8 @@ import StatusCard from '@/components/dashboard/StatusCard';
 import RecentProperties from '@/components/dashboard/RecentProperties';
 import WarrantyStatus from '@/components/dashboard/WarrantyStatus';
 import { Separator } from '@/components/ui/separator';
+import { Card } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 
 const Dashboard = () => {
   // Mock data for demonstration
@@ -88,17 +90,42 @@ const Dashboard = () => {
   // Calculate onboarding completion percentage
   const onboardingPercentage = 75; // Example percentage
 
+  // Problems data for the new table
+  const problems = [
+    {
+      id: '1',
+      property: '123 Main St',
+      type: 'Warranty Application',
+      issue: 'Incomplete Application',
+      date: 'Apr 10, 2025'
+    },
+    {
+      id: '2',
+      property: '456 Elm St',
+      type: 'Energy Guarantee',
+      issue: 'Missing Payment',
+      date: 'Apr 9, 2025'
+    },
+    {
+      id: '3',
+      property: '789 Oak Ave',
+      type: 'Builder\'s Risk Policy',
+      issue: 'Incomplete Application',
+      date: 'Apr 8, 2025'
+    }
+  ];
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <h1 className="text-2xl font-bold">Hello, Lee</h1>
         <p className="text-muted-foreground">Welcome back to your builder dashboard</p>
       </div>
       
       {/* Status cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatusCard 
-          title="Onboarding Applications" 
+          title="Onboarding Application" 
           count={onboardingPercentage}
           countSuffix="%"
           status="pending" 
@@ -133,16 +160,85 @@ const Dashboard = () => {
         </div>
       </div>
       
+      {/* Warranty Status Banner */}
+      <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+        <h3 className="font-medium text-primary mb-3">Warranty Applications Status</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white rounded-md p-3 border">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Enrolled</p>
+                <p className="text-xl font-bold">18</p>
+              </div>
+              <div className="h-8 w-8 rounded-full bg-success/10 flex items-center justify-center">
+                <Shield className="h-4 w-4 text-success" />
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-md p-3 border">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Pending</p>
+                <p className="text-xl font-bold">5</p>
+              </div>
+              <div className="h-8 w-8 rounded-full bg-warning/10 flex items-center justify-center">
+                <Shield className="h-4 w-4 text-warning" />
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-md p-3 border">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Issues</p>
+                <p className="text-xl font-bold">2</p>
+              </div>
+              <div className="h-8 w-8 rounded-full bg-danger/10 flex items-center justify-center">
+                <Shield className="h-4 w-4 text-danger" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       {/* Main content grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-6">
           <RecentProperties properties={recentProperties} />
-          <WarrantyStatus 
-            totalProperties={25}
-            enrolledProperties={18}
-            pendingProperties={5}
-            issuesProperties={2}
-          />
+          
+          {/* Problems Table */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-lg font-semibold mb-4">Problems Requiring Attention</h2>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Property</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Issue</TableHead>
+                    <TableHead>Date</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {problems.map((problem) => (
+                    <TableRow key={problem.id}>
+                      <TableCell className="font-medium">{problem.property}</TableCell>
+                      <TableCell>{problem.type}</TableCell>
+                      <TableCell>
+                        <span className={`px-2 py-1 rounded-full text-xs ${
+                          problem.issue.includes('Payment') 
+                            ? 'bg-warning/10 text-warning' 
+                            : 'bg-danger/10 text-danger'
+                        }`}>
+                          {problem.issue}
+                        </span>
+                      </TableCell>
+                      <TableCell>{problem.date}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
         </div>
         <div className="lg:col-span-4">
           <div className="dashboard-card">
