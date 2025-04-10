@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -48,6 +47,7 @@ type PropertyFormValues = z.infer<typeof propertyFormSchema>;
 
 const Properties = () => {
   const [isAddPropertyOpen, setIsAddPropertyOpen] = useState(false);
+  const navigate = useNavigate();
   
   // Mock data for demonstration
   const properties = [
@@ -171,6 +171,17 @@ const Properties = () => {
     { value: 'DC', label: 'District of Columbia' }
   ];
 
+  // Handle navigation to property details
+  const handleViewProperty = (propertyId: string) => {
+    navigate(`/properties/${propertyId}`);
+  };
+
+  const handleEditProperty = (propertyId: string) => {
+    navigate(`/properties/${propertyId}`);
+    // In a real app, we might set an edit mode or add a query parameter
+    // navigate(`/properties/${propertyId}?edit=true`);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -236,8 +247,20 @@ const Properties = () => {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                    <Button variant="ghost" size="sm">View</Button>
-                    <Button variant="ghost" size="sm">Edit</Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => handleViewProperty(property.id)}
+                    >
+                      View
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => handleEditProperty(property.id)}
+                    >
+                      Edit
+                    </Button>
                   </td>
                 </tr>
               ))}
