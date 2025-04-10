@@ -1,84 +1,29 @@
 
 import React from 'react';
-import { Bell, Menu, User, Building } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Bell, Menu, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuLabel, 
   DropdownMenuSeparator, 
-  DropdownMenuTrigger,
-  DropdownMenuGroup
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
 interface TopBarProps {
   toggleSidebar: () => void;
 }
 
-// Mock data for builder accounts
-const builderAccounts = [
-  { id: 1, name: "Acme Construction" },
-  { id: 2, name: "Summit Builders" },
-  { id: 3, name: "Horizon Homes" },
-  { id: 4, name: "Quality Structures Inc." }
-];
-
 const TopBar: React.FC<TopBarProps> = ({ toggleSidebar }) => {
-  const navigate = useNavigate();
-  
-  const handleExitBuilderAccount = () => {
-    navigate('/builder-details');
-  };
-  
   return (
     <header className="h-16 bg-white border-b border-border z-10">
       <div className="flex items-center justify-between h-full px-4">
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
-          
-          {/* Builder account dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="text-sm mr-2">
-                <Building className="h-4 w-4 mr-2" />
-                <span className="max-w-[150px] truncate">Acme Construction</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-[200px]">
-              <DropdownMenuLabel>Switch Builder Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                {builderAccounts.map((account) => (
-                  <DropdownMenuItem key={account.id}>
-                    {account.name}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden">
+          <Menu className="h-5 w-5" />
+        </Button>
         
         <div className="flex items-center ml-auto space-x-2">
-          {/* Admin pill */}
-          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 mr-2">
-            Admin
-          </Badge>
-          
-          {/* Exit Builder Account button */}
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={handleExitBuilderAccount}
-            className="mr-2 hidden sm:flex"
-          >
-            Exit Builder Account
-          </Button>
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
@@ -120,9 +65,6 @@ const TopBar: React.FC<TopBarProps> = ({ toggleSidebar }) => {
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleExitBuilderAccount} className="md:hidden">
-                Exit Builder Account
-              </DropdownMenuItem>
               <DropdownMenuItem>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
