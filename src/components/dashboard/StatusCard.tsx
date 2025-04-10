@@ -31,7 +31,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
   return (
     <div 
       className={cn(
-        "dashboard-card border rounded-lg", 
+        "dashboard-card border rounded-lg p-4", 
         onClick && "cursor-pointer hover:shadow-md transition-all",
         statusColors[status],
         className

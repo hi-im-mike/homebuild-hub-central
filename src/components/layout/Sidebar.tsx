@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { 
   Home, Users, FileText, Shield, Zap, ClipboardList, Settings, 
-  Bell, LogOut, User, ChevronLeft, ChevronRight, Building, Briefcase
+  Bell, LogOut, User, ChevronLeft, ChevronRight, Building, Briefcase, Printer
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -21,10 +21,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
     { name: 'Dashboard', path: '/', icon: Home },
     { name: 'Properties', path: '/properties', icon: Building },
     { name: 'Warranty Applications', path: '/warranty-applications', icon: Shield },
+    { name: 'Energy Guarantees', path: '/energy', icon: Zap },
     { name: "Builder's Risk Policies", path: '/risk-policies', icon: ClipboardList },
     { name: 'Subcontractors', path: '/subcontractors', icon: Briefcase },
     { name: 'Homeowners', path: '/homeowners', icon: Users },
-    { name: 'Energy Guarantees', path: '/energy', icon: Zap },
+    { name: 'Print Shop', path: 'https://maverick.myprintdesk.net', icon: Printer, external: true },
   ];
   
   const isActive = (path: string) => {
@@ -76,8 +77,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
               <Link 
                 key={item.path}
                 to={item.path}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
                 className={cn(
                   "flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+                  item.external ? "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground" :
                   isActive(item.path) 
                     ? "bg-sidebar-accent text-sidebar-accent-foreground" 
                     : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"

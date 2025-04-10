@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -209,50 +210,52 @@ const Dashboard = () => {
         </div>
       </div>
       
-      {/* Main content grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left column */}
-        <div className="lg:col-span-8 space-y-6">
+      {/* Main content grid - fixed for mobile */}
+      <div className="grid grid-cols-1 gap-6">
+        {/* Left column - Recent properties and Problems table */}
+        <div className="space-y-6">
           <RecentProperties properties={recentProperties} />
           
           {/* Problems Table */}
           <Card>
             <div className="p-6">
               <h2 className="text-lg font-semibold mb-4">Problems Requiring Attention</h2>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Property</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Issue</TableHead>
-                    <TableHead>Date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {problems.map((problem) => (
-                    <TableRow key={problem.id}>
-                      <TableCell className="font-medium">{problem.property}</TableCell>
-                      <TableCell>{problem.type}</TableCell>
-                      <TableCell>
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          problem.issue.includes('Payment') 
-                            ? 'bg-warning/10 text-warning' 
-                            : 'bg-danger/10 text-danger'
-                        }`}>
-                          {problem.issue}
-                        </span>
-                      </TableCell>
-                      <TableCell>{problem.date}</TableCell>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Property</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Issue</TableHead>
+                      <TableHead>Date</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {problems.map((problem) => (
+                      <TableRow key={problem.id}>
+                        <TableCell className="font-medium">{problem.property}</TableCell>
+                        <TableCell>{problem.type}</TableCell>
+                        <TableCell>
+                          <span className={`px-2 py-1 rounded-full text-xs ${
+                            problem.issue.includes('Payment') 
+                              ? 'bg-warning/10 text-warning' 
+                              : 'bg-danger/10 text-danger'
+                          }`}>
+                            {problem.issue}
+                          </span>
+                        </TableCell>
+                        <TableCell>{problem.date}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </Card>
         </div>
         
-        {/* Right column - fixed for mobile */}
-        <div className="lg:col-span-4 space-y-6">
+        {/* Right column - Contacts */}
+        <div className="space-y-6">
           {/* Company Contacts Card */}
           <ContactsList title="Company Contacts" contacts={companyContacts} />
           
