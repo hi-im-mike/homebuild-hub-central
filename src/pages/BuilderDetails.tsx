@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -17,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Buildings, Users, ArrowRight } from 'lucide-react';
+import { Building, Users, ArrowRight } from 'lucide-react';
 
 const BuilderDetails = () => {
   const navigate = useNavigate();
@@ -43,7 +42,7 @@ const BuilderDetails = () => {
           <p className="text-muted-foreground">Builder Account Details</p>
         </div>
         <Button onClick={() => navigate('/all-builders')}>
-          <Buildings className="mr-2 h-4 w-4" />
+          <Building className="mr-2 h-4 w-4" />
           View All Builders
         </Button>
       </div>
@@ -89,7 +88,7 @@ const BuilderDetails = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Buildings className="mr-2 h-5 w-5" />
+              <Building className="mr-2 h-5 w-5" />
               Linked Builder Accounts
             </CardTitle>
             <CardDescription>

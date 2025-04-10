@@ -2,13 +2,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Buildings, Users, Settings, LogOut } from 'lucide-react';
+import { Building, Users, Settings, LogOut } from 'lucide-react';
 
 const AdminNavbar = () => {
   const location = useLocation();
   
   const navItems = [
-    { name: 'Builders', path: '/all-builders', icon: Buildings },
+    { name: 'Builders', path: '/all-builders', icon: Building },
     { name: 'Admin Users', path: '/admin-users', icon: Users },
     { name: 'Account Settings', path: '/admin-settings', icon: Settings },
   ];

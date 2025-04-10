@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -18,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Buildings, PlusCircle, Search, ArrowRight } from 'lucide-react';
+import { Building, PlusCircle, Search, ArrowRight } from 'lucide-react';
 
 const AllBuilders = () => {
   const navigate = useNavigate();
