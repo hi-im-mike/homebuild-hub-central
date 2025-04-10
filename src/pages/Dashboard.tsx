@@ -5,53 +5,58 @@ import {
   Shield,
   Zap,
   ClipboardList,
-  AlertTriangle
+  AlertTriangle,
+  Mail,
+  Phone,
+  User
 } from 'lucide-react';
 import StatusCard from '@/components/dashboard/StatusCard';
-import RecentActivity from '@/components/dashboard/RecentActivity';
+import RecentProperties from '@/components/dashboard/RecentProperties';
 import WarrantyStatus from '@/components/dashboard/WarrantyStatus';
-import ContactsList from '@/components/dashboard/ContactsList';
+import { Separator } from '@/components/ui/separator';
 
 const Dashboard = () => {
   // Mock data for demonstration
-  const recentActivities = [
+  const recentProperties = [
     {
       id: '1',
-      title: 'Warranty Application Submitted',
-      description: '123 Main St - New warranty application submitted',
+      title: '123 Main St',
+      description: 'New warranty application submitted',
       date: 'Today at 2:30 PM',
       type: 'warranty' as const,
     },
     {
       id: '2',
-      title: 'Property Added',
-      description: '456 Elm St - New property added to your portfolio',
+      title: '456 Elm St',
+      description: 'New property added to your portfolio',
       date: 'Yesterday at 10:15 AM',
       type: 'property' as const,
     },
     {
       id: '3',
-      title: 'Onboarding Update',
-      description: 'Your company onboarding status has been updated to Approved',
+      title: '789 Oak Ave',
+      description: 'Onboarding status updated to Approved',
       date: 'Apr 8, 2025',
       type: 'onboarding' as const,
     },
     {
       id: '4',
-      title: 'Energy Guarantee Issued',
-      description: '789 Oak Ave - Energy guarantee certificate issued',
+      title: '234 Pine Lane',
+      description: 'Energy guarantee certificate issued',
       date: 'Apr 7, 2025',
       type: 'energy' as const,
     },
   ];
   
-  const companyContacts = [
+  const contacts = [
+    // Company contacts
     {
       id: '1',
       name: 'John Smith',
       role: 'Project Manager',
       email: 'john.smith@example.com',
       phone: '(555) 123-4567',
+      isAdmin: false
     },
     {
       id: '2',
@@ -59,25 +64,29 @@ const Dashboard = () => {
       role: 'Site Supervisor',
       email: 'sarah.johnson@example.com',
       phone: '(555) 987-6543',
+      isAdmin: false
     },
-  ];
-  
-  const adminContacts = [
+    // Admin contacts
     {
-      id: '1',
+      id: '3',
       name: 'Support Team',
       role: 'Technical Support',
-      email: 'support@homebuildhub.com',
+      email: 'support@maverick.com',
       phone: '(800) 555-1234',
+      isAdmin: true
     },
     {
-      id: '2',
+      id: '4',
       name: 'Jessica Adams',
       role: 'Account Manager',
-      email: 'jessica.adams@homebuildhub.com',
+      email: 'jessica.adams@maverick.com',
       phone: '(800) 555-5678',
+      isAdmin: true
     },
   ];
+
+  // Calculate onboarding completion percentage
+  const onboardingPercentage = 75; // Example percentage
 
   return (
     <div className="space-y-6">
@@ -90,7 +99,8 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatusCard 
           title="Onboarding Applications" 
-          count={2} 
+          count={onboardingPercentage}
+          countSuffix="%"
           status="pending" 
           icon={<FileText className="h-6 w-6" />} 
         />
@@ -107,7 +117,7 @@ const Dashboard = () => {
           icon={<Zap className="h-6 w-6" />} 
         />
         <StatusCard 
-          title="Risk Policies" 
+          title="Builder's Risk Policies" 
           count={3} 
           status="incomplete" 
           icon={<ClipboardList className="h-6 w-6" />} 
@@ -126,7 +136,7 @@ const Dashboard = () => {
       {/* Main content grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-6">
-          <RecentActivity activities={recentActivities} />
+          <RecentProperties properties={recentProperties} />
           <WarrantyStatus 
             totalProperties={25}
             enrolledProperties={18}
@@ -134,9 +144,75 @@ const Dashboard = () => {
             issuesProperties={2}
           />
         </div>
-        <div className="lg:col-span-4 space-y-6">
-          <ContactsList title="Company Contacts" contacts={companyContacts} />
-          <ContactsList title="Admin Contacts" contacts={adminContacts} />
+        <div className="lg:col-span-4">
+          <div className="dashboard-card">
+            <div className="dashboard-card-header">
+              <h2 className="dashboard-card-title">Contacts</h2>
+            </div>
+            
+            <div className="space-y-4">
+              {/* Company contacts */}
+              {contacts.filter(contact => !contact.isAdmin).map((contact) => (
+                <div key={contact.id} className="flex items-start space-x-4 border-b border-border pb-4 last:pb-0 last:border-0">
+                  <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+                    <User className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-medium">{contact.name}</h4>
+                    <p className="text-sm text-muted-foreground">{contact.role}</p>
+                    <div className="mt-2 space-y-1">
+                      <div className="flex items-center text-sm">
+                        <Mail className="h-3 w-3 mr-2 text-muted-foreground" />
+                        <a href={`mailto:${contact.email}`} className="text-primary hover:underline">
+                          {contact.email}
+                        </a>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <Phone className="h-3 w-3 mr-2 text-muted-foreground" />
+                        <a href={`tel:${contact.phone}`} className="text-primary hover:underline">
+                          {contact.phone}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              {/* Divider between company and admin contacts */}
+              <div className="py-2">
+                <Separator className="h-0.5 bg-primary/10" />
+                <p className="text-center text-sm text-muted-foreground font-medium py-1">ADMIN CONTACTS</p>
+                <Separator className="h-0.5 bg-primary/10" />
+              </div>
+              
+              {/* Admin contacts */}
+              {contacts.filter(contact => contact.isAdmin).map((contact) => (
+                <div key={contact.id} className="flex items-start space-x-4 border-b border-border pb-4 last:pb-0 last:border-0">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <User className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-medium">{contact.name}</h4>
+                    <p className="text-sm text-muted-foreground">{contact.role}</p>
+                    <div className="mt-2 space-y-1">
+                      <div className="flex items-center text-sm">
+                        <Mail className="h-3 w-3 mr-2 text-muted-foreground" />
+                        <a href={`mailto:${contact.email}`} className="text-primary hover:underline">
+                          {contact.email}
+                        </a>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <Phone className="h-3 w-3 mr-2 text-muted-foreground" />
+                        <a href={`tel:${contact.phone}`} className="text-primary hover:underline">
+                          {contact.phone}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

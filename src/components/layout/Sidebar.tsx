@@ -23,7 +23,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
     { name: 'Onboarding Applications', path: '/onboarding', icon: FileText },
     { name: 'Warranty Applications', path: '/warranty', icon: Shield },
     { name: 'Energy Guarantees', path: '/energy', icon: Zap },
-    { name: 'Risk Policies', path: '/risk-policies', icon: ClipboardList },
+    { name: "Builder's Risk Policies", path: '/risk-policies', icon: ClipboardList },
   ];
   
   const isActive = (path: string) => {
@@ -51,9 +51,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
         {/* Sidebar header */}
         <div className="h-16 flex items-center justify-between border-b border-sidebar-border px-4">
           {isOpen ? (
-            <h1 className="text-xl font-bold">HomeBuild Hub</h1>
+            <h1 className="text-xl font-bold">Maverick</h1>
           ) : (
-            <span className="text-xl font-bold mx-auto">HBH</span>
+            <span className="text-xl font-bold mx-auto">MAV</span>
           )}
           
           {!isMobile && (

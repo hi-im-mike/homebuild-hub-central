@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 interface StatusCardProps {
   title: string;
   count: number;
+  countSuffix?: string;
   status: 'pending' | 'approved' | 'rejected' | 'incomplete';
   icon: React.ReactNode;
   className?: string;
@@ -13,6 +14,7 @@ interface StatusCardProps {
 const StatusCard: React.FC<StatusCardProps> = ({ 
   title, 
   count, 
+  countSuffix = '',
   status, 
   icon,
   className 
@@ -33,7 +35,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-medium">{title}</h3>
-          <p className="text-3xl font-bold mt-2">{count}</p>
+          <p className="text-3xl font-bold mt-2">{count}{countSuffix}</p>
         </div>
         <div className="p-3 rounded-full bg-white/90 shadow-sm">
           {icon}
