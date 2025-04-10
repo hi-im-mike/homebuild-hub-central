@@ -21,8 +21,8 @@ import {
 import { ClipboardList, Search, Building, AlertTriangle, PlusCircle } from 'lucide-react';
 import StatusBadge from '@/components/shared/StatusBadge';
 
-// Define the status type to match what StatusBadge expects
-type Status = "pending" | "approved" | "incomplete" | "completed" | "active";
+// Import the type from StatusBadge instead of redefining it
+type Status = 'pending' | 'approved' | 'rejected' | 'incomplete' | 'active' | 'inactive' | 'expired';
 
 interface Policy {
   id: string;

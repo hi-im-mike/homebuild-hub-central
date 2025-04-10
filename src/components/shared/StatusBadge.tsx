@@ -2,7 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-type Status = 'pending' | 'approved' | 'rejected' | 'incomplete' | 'active' | 'inactive' | 'expired';
+export type Status = 'pending' | 'approved' | 'rejected' | 'incomplete' | 'active' | 'inactive' | 'expired';
 
 interface StatusBadgeProps {
   status: Status;
