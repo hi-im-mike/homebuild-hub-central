@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FileText,
   Shield,
@@ -18,6 +19,8 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import ContactsList from '@/components/dashboard/ContactsList';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  
   // Mock data for demonstration
   const recentProperties = [
     {
@@ -114,6 +117,10 @@ const Dashboard = () => {
     }
   ];
 
+  const handleCardClick = (route: string) => {
+    navigate(route);
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -134,19 +141,22 @@ const Dashboard = () => {
           title="Warranty Applications" 
           count={12} 
           status="approved" 
-          icon={<Shield className="h-6 w-6" />} 
+          icon={<Shield className="h-6 w-6" />}
+          onClick={() => handleCardClick('/warranty-applications')}
         />
         <StatusCard 
           title="Energy Guarantees" 
           count={8} 
           status="approved" 
-          icon={<Zap className="h-6 w-6" />} 
+          icon={<Zap className="h-6 w-6" />}
+          onClick={() => handleCardClick('/energy')}
         />
         <StatusCard 
           title="Builder's Risk Policies" 
           count={3} 
           status="incomplete" 
-          icon={<ClipboardList className="h-6 w-6" />} 
+          icon={<ClipboardList className="h-6 w-6" />}
+          onClick={() => handleCardClick('/risk-policies')}
         />
       </div>
       
@@ -201,6 +211,7 @@ const Dashboard = () => {
       
       {/* Main content grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left column */}
         <div className="lg:col-span-8 space-y-6">
           <RecentProperties properties={recentProperties} />
           
@@ -239,6 +250,8 @@ const Dashboard = () => {
             </div>
           </Card>
         </div>
+        
+        {/* Right column - fixed for mobile */}
         <div className="lg:col-span-4 space-y-6">
           {/* Company Contacts Card */}
           <ContactsList title="Company Contacts" contacts={companyContacts} />

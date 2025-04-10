@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { 
   Building, 
   User, 
@@ -17,7 +17,11 @@ import {
   FileText, 
   Upload, 
   Plus,
-  BarChart
+  BarChart,
+  CreditCard,
+  Check,
+  ArrowRight,
+  Receipt
 } from 'lucide-react';
 import {
   Table,
@@ -41,6 +45,7 @@ const Settings = () => {
           <TabsTrigger value="profile">Builder Profile</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
+          <TabsTrigger value="subscription">Subscriptions & Payments</TabsTrigger>
         </TabsList>
         
         {/* Builder Profile Tab */}
@@ -434,6 +439,307 @@ const Settings = () => {
                     </TableCell>
                     <TableCell>Mar 31, 2025</TableCell>
                     <TableCell>Excel</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="sm">Download</Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        {/* Subscriptions & Payments Tab */}
+        <TabsContent value="subscription" className="space-y-6">
+          {/* Current Subscription */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Current Subscription</CardTitle>
+              <CardDescription>
+                Manage your subscription plan and payment details
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col md:flex-row gap-6">
+                <Card className="flex-1 border-2 border-primary">
+                  <CardHeader className="bg-primary/5 border-b border-primary/20">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-primary">Pro Plan</CardTitle>
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+                        Current Plan
+                      </Badge>
+                    </div>
+                    <CardDescription>
+                      For growing builders managing multiple properties
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-6">
+                    <div className="text-3xl font-bold mb-1">$325<span className="text-base font-normal text-muted-foreground">/month</span></div>
+                    <p className="text-muted-foreground mb-6">Billed monthly</p>
+                    
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mr-2 shrink-0 mt-0.5" />
+                        <span>Up to 50 properties</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mr-2 shrink-0 mt-0.5" />
+                        <span>Unlimited warranty applications</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mr-2 shrink-0 mt-0.5" />
+                        <span>Energy guarantee certificates</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mr-2 shrink-0 mt-0.5" />
+                        <span>Email support</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                  <CardFooter>
+                    <Button variant="outline" className="w-full">Current Plan</Button>
+                  </CardFooter>
+                </Card>
+                
+                <div className="space-y-6 flex-1">
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Payment Information</h3>
+                    <div className="flex items-center space-x-4 p-4 border rounded-md bg-muted/10">
+                      <CreditCard className="h-10 w-10 text-primary" />
+                      <div>
+                        <p className="font-medium">Visa ending in 4242</p>
+                        <p className="text-sm text-muted-foreground">Expires 12/2025</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Subscription Details</h3>
+                    <dl className="space-y-2">
+                      <div className="flex justify-between py-2 border-b">
+                        <dt className="text-muted-foreground">Plan</dt>
+                        <dd className="font-medium">Pro</dd>
+                      </div>
+                      <div className="flex justify-between py-2 border-b">
+                        <dt className="text-muted-foreground">Billing cycle</dt>
+                        <dd className="font-medium">Monthly</dd>
+                      </div>
+                      <div className="flex justify-between py-2 border-b">
+                        <dt className="text-muted-foreground">Next billing date</dt>
+                        <dd className="font-medium">May 12, 2025</dd>
+                      </div>
+                      <div className="flex justify-between py-2">
+                        <dt className="text-muted-foreground">Amount</dt>
+                        <dd className="font-medium">$325.00</dd>
+                      </div>
+                    </dl>
+                  </div>
+                  
+                  <div className="space-y-4 pt-4">
+                    <Button variant="outline" className="w-full">Update Payment Method</Button>
+                    <Button variant="outline" className="w-full text-danger border-danger hover:bg-danger/10">Cancel Subscription</Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Available Plans */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Available Plans</CardTitle>
+              <CardDescription>
+                Compare plans and choose the best option for your business
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Free Plan */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Free</CardTitle>
+                    <CardDescription>
+                      For small builders just getting started
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold mb-1">$0<span className="text-base font-normal text-muted-foreground">/month</span></div>
+                    <p className="text-muted-foreground mb-6">Limited features</p>
+                    
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-muted-foreground mr-2 shrink-0 mt-0.5" />
+                        <span>Up to 5 properties</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-muted-foreground mr-2 shrink-0 mt-0.5" />
+                        <span>Basic warranty applications</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                  <CardFooter>
+                    <Button variant="outline" className="w-full">
+                      Downgrade
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardFooter>
+                </Card>
+                
+                {/* Pro Plan */}
+                <Card className="border-2 border-primary">
+                  <CardHeader className="bg-primary/5">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-primary">Pro</CardTitle>
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">Popular</Badge>
+                    </div>
+                    <CardDescription>
+                      For growing builders managing multiple properties
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold mb-1">$325<span className="text-base font-normal text-muted-foreground">/month</span></div>
+                    <p className="text-muted-foreground mb-6">Billed monthly</p>
+                    
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mr-2 shrink-0 mt-0.5" />
+                        <span>Up to 50 properties</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mr-2 shrink-0 mt-0.5" />
+                        <span>Unlimited warranty applications</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mr-2 shrink-0 mt-0.5" />
+                        <span>Energy guarantee certificates</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-primary mr-2 shrink-0 mt-0.5" />
+                        <span>Email support</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                  <CardFooter>
+                    <Button variant="outline" className="w-full">Current Plan</Button>
+                  </CardFooter>
+                </Card>
+                
+                {/* Elite Plan */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Elite</CardTitle>
+                    <CardDescription>
+                      For large builders with extensive operations
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold mb-1">$1,200<span className="text-base font-normal text-muted-foreground">/month</span></div>
+                    <p className="text-muted-foreground mb-6">Billed monthly</p>
+                    
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-muted-foreground mr-2 shrink-0 mt-0.5" />
+                        <span>Unlimited properties</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-muted-foreground mr-2 shrink-0 mt-0.5" />
+                        <span>All Pro features</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-muted-foreground mr-2 shrink-0 mt-0.5" />
+                        <span>Advanced analytics</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-muted-foreground mr-2 shrink-0 mt-0.5" />
+                        <span>Dedicated account manager</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Check className="h-5 w-5 text-muted-foreground mr-2 shrink-0 mt-0.5" />
+                        <span>24/7 phone support</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                  <CardFooter>
+                    <Button className="w-full">
+                      Upgrade
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Billing History */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Billing History</CardTitle>
+              <CardDescription>
+                View and download your past invoices
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Invoice</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <Receipt className="h-5 w-5 text-primary mr-3" />
+                        <span className="font-medium">INV-0025</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>Apr 12, 2025</TableCell>
+                    <TableCell>$325.00</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="bg-success/10 text-success border-success/30">
+                        Paid
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="sm">Download</Button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <Receipt className="h-5 w-5 text-primary mr-3" />
+                        <span className="font-medium">INV-0024</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>Mar 12, 2025</TableCell>
+                    <TableCell>$325.00</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="bg-success/10 text-success border-success/30">
+                        Paid
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="sm">Download</Button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <Receipt className="h-5 w-5 text-primary mr-3" />
+                        <span className="font-medium">INV-0023</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>Feb 12, 2025</TableCell>
+                    <TableCell>$325.00</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="bg-success/10 text-success border-success/30">
+                        Paid
+                      </Badge>
+                    </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="sm">Download</Button>
                     </TableCell>
