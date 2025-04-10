@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { 
   Home, Users, FileText, Shield, Zap, ClipboardList, Settings, 
-  Bell, LogOut, User, ChevronLeft, ChevronRight
+  Bell, LogOut, User, ChevronLeft, ChevronRight, Building, Briefcase
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -19,11 +19,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, isMobile }) =>
   
   const menuItems = [
     { name: 'Dashboard', path: '/', icon: Home },
-    { name: 'Properties', path: '/properties', icon: Users },
-    { name: 'Onboarding Applications', path: '/onboarding', icon: FileText },
-    { name: 'Warranty Applications', path: '/warranty', icon: Shield },
-    { name: 'Energy Guarantees', path: '/energy', icon: Zap },
+    { name: 'Properties', path: '/properties', icon: Building },
+    { name: 'Warranty Applications', path: '/warranty-applications', icon: Shield },
     { name: "Builder's Risk Policies", path: '/risk-policies', icon: ClipboardList },
+    { name: 'Homeowners', path: '/homeowners', icon: Users },
+    { name: 'Energy Guarantees', path: '/energy', icon: Zap },
+    { name: 'Subcontractors', path: '/subcontractors', icon: Briefcase },
   ];
   
   const isActive = (path: string) => {

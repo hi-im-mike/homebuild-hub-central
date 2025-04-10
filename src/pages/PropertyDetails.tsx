@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Tabs, 
   TabsContent, 
@@ -30,6 +30,11 @@ import {
 const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Extract the tab parameter from the URL if present
+  const queryParams = new URLSearchParams(location.search);
+  const tabParam = queryParams.get('tab');
   
   // This would normally be fetched from an API
   const property = {
@@ -64,6 +69,20 @@ const PropertyDetails = () => {
     navigate('/properties');
   };
 
+  // Map the tab parameter to the tab value
+  const getTabValue = () => {
+    switch (tabParam) {
+      case 'warranty':
+        return 'warranty';
+      case 'builders-risk':
+        return 'builders-risk';
+      case 'energy':
+        return 'energy';
+      default:
+        return 'property';
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
@@ -83,7 +102,7 @@ const PropertyDetails = () => {
         </div>
       </div>
       
-      <Tabs defaultValue="property" className="w-full">
+      <Tabs defaultValue={getTabValue()} className="w-full">
         <TabsList className="grid grid-cols-4 w-full">
           <TabsTrigger value="property" className="flex items-center">
             <Home className="h-4 w-4 mr-2" />
