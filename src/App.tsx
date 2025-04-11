@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import WarrantyApplications from "./pages/WarrantyApplications";
 import RiskPolicies from "./pages/RiskPolicies";
 import Homeowners from "./pages/Homeowners";
+import HomeownerDetails from "./pages/HomeownerDetails";
 import Subcontractors from "./pages/Subcontractors";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/warranty-applications" element={<Layout><WarrantyApplications /></Layout>} />
           <Route path="/risk-policies" element={<Layout><RiskPolicies /></Layout>} />
           <Route path="/homeowners" element={<Layout><Homeowners /></Layout>} />
+          <Route path="/homeowners/:id" element={<Layout><HomeownerDetails /></Layout>} />
           <Route path="/energy" element={<Layout><Dashboard /></Layout>} />
           <Route path="/subcontractors" element={<Layout><Subcontractors /></Layout>} />
           <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />

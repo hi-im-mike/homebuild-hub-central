@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -20,6 +20,8 @@ import {
 import { Users, PlusCircle, Search, User, Mail, Phone } from 'lucide-react';
 
 const Homeowners = () => {
+  const navigate = useNavigate();
+  
   // Mock data for demonstration
   const homeowners = [
     {
@@ -51,6 +53,10 @@ const Homeowners = () => {
       properties: 1,
     },
   ];
+
+  const handleViewHomeowner = (id: string) => {
+    navigate(`/homeowners/${id}`);
+  };
 
   return (
     <div className="space-y-6">
@@ -145,7 +151,13 @@ const Homeowners = () => {
                   </TableCell>
                   <TableCell>{homeowner.properties}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm">View</Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => handleViewHomeowner(homeowner.id)}
+                    >
+                      View
+                    </Button>
                     <Button variant="ghost" size="sm">Edit</Button>
                   </TableCell>
                 </TableRow>
