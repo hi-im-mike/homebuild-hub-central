@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 import BuilderDetails from "./pages/BuilderDetails";
 import AllBuilders from "./pages/AllBuilders";
+import Notifications from "./pages/Notifications";
 import AdminNavbar from "./components/layout/AdminNavbar";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/subcontractors" element={<Layout><Subcontractors /></Layout>} />
           <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />
           <Route path="/settings" element={<Layout><Settings /></Layout>} />
+          <Route path="/notifications" element={<Layout><Notifications /></Layout>} />
           
           {/* Admin routes */}
           <Route path="/builder-details" element={<>

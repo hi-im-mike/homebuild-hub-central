@@ -70,34 +70,15 @@ const TopBar: React.FC<TopBarProps> = ({ toggleSidebar }) => {
             Exit Builder Account
           </Button>
           
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
-                <Bell className="h-5 w-5" />
-                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-danger" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80">
-              <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <div className="max-h-96 overflow-y-auto">
-                <DropdownMenuItem className="p-3 cursor-pointer">
-                  <div>
-                    <p className="font-medium">New Warranty Application</p>
-                    <p className="text-sm text-muted-foreground">Property: 123 Main St has a new warranty claim</p>
-                    <p className="text-xs text-muted-foreground mt-1">2 hours ago</p>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="p-3 cursor-pointer">
-                  <div>
-                    <p className="font-medium">Onboarding Status Updated</p>
-                    <p className="text-sm text-muted-foreground">Your application is now approved</p>
-                    <p className="text-xs text-muted-foreground mt-1">1 day ago</p>
-                  </div>
-                </DropdownMenuItem>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="relative" 
+            onClick={() => navigate('/notifications')}
+          >
+            <Bell className="h-5 w-5" />
+            <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-destructive" />
+          </Button>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
